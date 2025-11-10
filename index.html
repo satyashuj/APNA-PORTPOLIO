@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="hi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>🎓 Student Portfolio - Photo & Signature View</title>
+  <style>
+    :root{
+      --gradient: linear-gradient(135deg, #4f46e5, #9333ea, #ec4899);
+      --bg:#0f172a;
+      --card:#1e1b4b;
+      --text:#f8fafc;
+      --muted:#cbd5e1;
+      --border:rgba(255,255,255,0.1);
+    }
+    *{box-sizing:border-box; transition:all 0.3s ease-in-out}
+    body{
+      font-family:'Poppins',sans-serif;
+      margin:0; background:var(--bg); color:var(--text);
+      display:flex; align-items:center; justify-content:center;
+      min-height:100vh; padding:30px;
+    }
+    .container{
+      width:100%; max-width:1000px; background:var(--card);
+      border-radius:16px; padding:24px 28px;
+      box-shadow:0 0 25px rgba(0,0,0,0.5);
+      border:1px solid var(--border);
+      background-image:linear-gradient(160deg, rgba(255,255,255,0.05), transparent);
+    }
+
+    header.main-header{text-align:center; margin-bottom:20px;}
+    header.main-header h1{font-size:32px; font-weight:700; margin:0; background:var(--gradient); -webkit-background-clip:text; -webkit-text-fill-color:transparent; text-transform:uppercase; letter-spacing:1px;}
+    header.main-header h2{font-size:18px; color:var(--muted); margin:4px 0;}
+    .underline{width:160px; height:4px; margin:10px auto; background:var(--gradient); border-radius:2px;}
+
+    label{display:block; font-size:14px; color:var(--muted); margin-bottom:6px; font-weight:500}
+    input,textarea{width:100%; padding:10px 12px; border-radius:8px; border:1px solid var(--border); background:rgba(255,255,255,0.06); color:var(--text);}
+    input:focus,textarea:focus{outline:none; border-color:#9333ea; background:rgba(255,255,255,0.08)}
+    .row{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+    .field{margin-bottom:14px}
+
+    table{width:100%; border-collapse:collapse; margin-top:8px; border-radius:10px; overflow:hidden}
+    th,td{padding:10px; text-align:left; border:1px solid rgba(255,255,255,0.05)}
+    th{background:linear-gradient(90deg,#4f46e5,#9333ea,#ec4899); color:#fff; text-align:center}
+    tr:nth-child(even){background:rgba(255,255,255,0.04)}
+    tr:hover{background:rgba(236,72,153,0.1)}
+
+    .btn{padding:10px 18px; border:none; border-radius:10px; font-weight:600; cursor:pointer; background:var(--gradient); color:white; box-shadow:0 0 12px rgba(236,72,153,0.3);}
+    .btn.secondary{background:transparent; border:1px solid rgba(255,255,255,0.2); color:var(--muted)}
+    .btn:hover{opacity:0.9; transform:scale(1.03)}
+
+    .photo-preview, .sign-preview{background:linear-gradient(145deg,rgba(79,70,229,0.2),rgba(147,51,234,0.2)); border-radius:12px; padding:12px; text-align:center; border:2px dashed rgba(255,255,255,0.15); margin-top:10px;}
+    .photo-preview img, .sign-preview img{width:150px; height:150px; border-radius:10px; object-fit:cover; border:3px solid transparent; background-image:var(--gradient); background-clip:padding-box; margin-bottom:10px;}
+
+    .preview-card{background:rgba(255,255,255,0.05); border-radius:14px; padding:18px; border:1px solid rgba(255,255,255,0.1); box-shadow:0 0 15px rgba(147,51,234,0.3); margin-top:20px;}
+    .preview-flex{display:flex; justify-content:space-between; align-items:flex-start; gap:20px; flex-wrap:wrap;}
+    .preview-left{flex:1; min-width:400px;}
+    .preview-right{width:250px; text-align:center;}
+
+    .preview-card h3{margin:0;color:#ec4899}
+    footer.signatures{display:flex; justify-content:space-between; margin-top:40px; align-items:center; border-top:3px solid; border-image:var(--gradient) 1; padding-top:20px;}
+    footer.signatures div{text-align:center; width:45%;}
+    footer.signatures span{display:block; margin-top:8px; color:var(--muted); font-size:14px;}
+
+    @media print {
+      body{background:white; color:black;}
+      .btn, #addRow {display:none !important;}
+      .container{box-shadow:none; background:white; color:black;}
+      th{background:#4f46e5 !important; color:white !important;}
+      footer.signatures{border-color:#4f46e5;}
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="main-header">
+      <h1>Student Portfolio</h1>
+      <h2 id="studentNameTitle">Your Name Here</h2>
+      <div class="underline"></div>
+    </header>
+
+    <form id="portfolioForm">
+      <div class="row">
+        <div class="field"><label for="name">नाम (Name)</label><input id="name" type="text" placeholder="Satyanshu Saxena" required /></div>
+        <div class="field"><label for="class">कक्षा / कोर्स (Class / Course)</label><input id="class" type="text" placeholder="12th / BCA" /></div>
+      </div>
+      <div class="row">
+        <div class="field"><label for="roll">रोल नंबर (Roll No.)</label><input id="roll" type="text" placeholder="12345" /></div>
+        <div class="field"><label for="email">ईमेल (Email)</label><input id="email" type="email" placeholder="you@example.com" /></div>
+      </div>
+
+      <div class="field">
+        <label>शैक्षणिक योग्यता (Educational Qualification)</label>
+        <table id="eduTable">
+          <thead><tr><th>कोर्स</th><th>संस्थान / कॉलेज</th><th>बोर्ड / यूनिवर्सिटी</th><th>वर्ष</th><th>प्रतिशत (%)</th><th>Action</th></tr></thead>
+          <tbody><tr><td><input type="text" placeholder="10th" /></td><td><input type="text" placeholder="ABC School" /></td><td><input type="text" placeholder="CBSE" /></td><td><input type="text" placeholder="2022" /></td><td><input type="text" placeholder="85%" /></td><td><button type="button" class="btn secondary removeRow">❌</button></td></tr></tbody>
+        </table>
+        <button id="addRow" type="button" class="btn secondary" style="margin-top:8px;">+ Add Row</button>
+      </div>
+
+      <div class="field"><label for="skills">कौशल (Skills)</label><input id="skills" type="text" placeholder="Java, HTML, CSS, JavaScript" /></div>
+
+      <div class="row">
+        <div class="field"><label for="photo">छात्र फोटो (Photo)</label><input id="photo" type="file" accept="image/*" /><div id="photoPreview" class="photo-preview"><img id="photoImg" src="" alt="photo preview" /></div></div>
+        <div class="field"><label for="signature">हस्ताक्षर (Signature)</label><input id="signature" type="file" accept="image/*" /><div id="signPreview" class="sign-preview"><img id="signImg" src="" alt="signature preview" /></div></div>
+      </div>
+
+      <button type="submit" class="btn">Submit</button>
+    </form>
+
+    <div id="preview" class="preview-card hidden">
+      <div class="preview-flex">
+        <div class="preview-left">
+          <h3 id="prevName"></h3>
+          <p id="prevClass"></p>
+          <p id="prevEmail"></p>
+          <h4 style="color:#a78bfa;">शैक्षणिक योग्यता:</h4>
+          <table id="prevTable">
+            <thead><tr><th>कोर्स</th><th>संस्थान</th><th>बोर्ड</th><th>वर्ष</th><th>प्रतिशत (%)</th></tr></thead>
+            <tbody></tbody>
+          </table>
+          <h4 style="color:#a78bfa;">कौशल:</h4>
+          <p id="prevSkills"></p>
+        </div>
+
+        <div class="preview-right">
+          <div class="photo-preview"><img id="prevImg" src="" alt="Student Photo" /></div>
+          <div class="sign-preview"><img id="prevSign" src="" alt="Student Signature" /></div>
+        </div>
+      </div>
+      <button id="printBtn" class="btn" style="margin-top:10px;">📄 Print / Save as PDF</button>
+      <footer class="signatures">
+        <div>________________________<span>Student Signature</span></div>
+        <div>________________________<span>Verified by Teacher / Admin</span></div>
+      </footer>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('portfolioForm');
+    const photoInput = document.getElementById('photo');
+    const signInput = document.getElementById('signature');
+    const photoImg = document.getElementById('photoImg');
+    const signImg = document.getElementById('signImg');
+    const addRowBtn = document.getElementById('addRow');
+    const eduTable = document.getElementById('eduTable').querySelector('tbody');
+    const preview = document.getElementById('preview');
+    const printBtn = document.getElementById('printBtn');
+
+    photoInput.addEventListener('change', e => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = () => photoImg.src = reader.result;
+        reader.readAsDataURL(file);
+      }
+    });
+
+    signInput.addEventListener('change', e => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = () => signImg.src = reader.result;
+        reader.readAsDataURL(file);
+      }
+    });
+
+    addRowBtn.addEventListener('click', () => {
+      const newRow = document.createElement('tr');
+      newRow.innerHTML = `<td><input type="text" placeholder="Course" /></td><td><input type="text" placeholder="Institute / College" /></td><td><input type="text" placeholder="Board / University" /></td><td><input type="text" placeholder="Year" /></td><td><input type="text" placeholder="Percentage" /></td><td><button type="button" class="btn secondary removeRow">❌</button></td>`;
+      eduTable.appendChild(newRow);
+    });
+
+    eduTable.addEventListener('click', (e) => {
+      if (e.target.classList.contains('removeRow')) e.target.closest('tr').remove();
+    });
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      document.getElementById('preview').classList.remove('hidden');
+      document.getElementById('studentNameTitle').textContent = document.getElementById('name').value;
+      document.getElementById('prevName').textContent = document.getElementById('name').value;
+      document.getElementById('prevClass').textContent = 'Class: ' + document.getElementById('class').value + ' | Roll No: ' + document.getElementById('roll').value;
+      document.getElementById('prevEmail').textContent = 'Email: ' + document.getElementById('email').value;
+      document.getElementById('prevSkills').textContent = document.getElementById('skills').value;
+
+      const prevTableBody = document.getElementById('prevTable').querySelector('tbody');
+      prevTableBody.innerHTML = '';
+      eduTable.querySelectorAll('tr').forEach(tr => {
+        const tds = tr.querySelectorAll('td input');
+        const row = document.createElement('tr');
+        tds.forEach(td => {
+          const cell = document.createElement('td'); cell.textContent = td.value; row.appendChild(cell);
+        });
+        prevTableBody.appendChild(row);
+      });
+
+      const file = photoInput.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = () => document.getElementById('prevImg').src = reader.result;
+        reader.readAsDataURL(file);
+      }
+
+      const signFile = signInput.files[0];
+      if (signFile) {
+        const reader = new FileReader();
+        reader.onload = () => document.getElementById('prevSign').src = reader.result;
+        reader.readAsDataURL(signFile);
+      }
+
+      window.scrollTo({top:document.body.scrollHeight, behavior:'smooth'});
+    });
+
+    printBtn.addEventListener('click', () => window.print());
+  </script>
+</body>
+</html>
